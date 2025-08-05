@@ -10,3 +10,8 @@ export const VerfityOtpSchema = z.object({
   email: z.email(),
   otp: z.string().length(6),
 });
+
+export const SignInSchema = z.object({
+  email: z.email(),
+  password: z.string(),
+});

@@ -63,7 +63,7 @@ export async function SendMail(to: string, otp: string) {
     </html>
   `;
   const { data, error } = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
+    from: "Uptime <onboarding@resend.dev>",
     to: [to],
     subject: "OTP Verification for Uptime",
     html,
