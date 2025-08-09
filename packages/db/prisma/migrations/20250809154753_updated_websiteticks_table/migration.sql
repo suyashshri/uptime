@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "public"."WebsiteTicks" ADD COLUMN     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
