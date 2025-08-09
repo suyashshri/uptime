@@ -16,6 +16,7 @@ router.post("/signup", async (req, res) => {
       res.status(400).json({
         message: "Invalid/Incorrect Inputs provided",
       });
+      return;
     }
 
     const { username, email, password } = parsedData.data!;
@@ -43,7 +44,7 @@ router.post("/signup", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      error,
+      //   error,
       message: "Error Occured while signing up.Please try after sometime",
     });
     return;
@@ -58,6 +59,7 @@ router.post("/verify-otp", async (req, res) => {
       res.status(400).json({
         message: "Invalid/Incorrect Inputs provided",
       });
+      return;
     }
 
     const { email, otp } = parsedData.data!;
@@ -76,6 +78,7 @@ router.post("/verify-otp", async (req, res) => {
       res.status(400).json({ message: "User already verified" });
       return;
     }
+
     if (user.otp != otp) {
       res.status(401).json({ message: "Invalid or expired OTP" });
       return;
@@ -101,7 +104,7 @@ router.post("/verify-otp", async (req, res) => {
     res.status(200).json({ message: "Verified successfully", token });
   } catch (error) {
     res.status(500).json({
-      error,
+      // error,
       message: "Error Occured while verfying OTP.Please try after sometime",
     });
     return;
@@ -116,6 +119,7 @@ router.post("/signin", async (req, res) => {
       res.status(400).json({
         message: "Invalid/Incorrect Inputs provided",
       });
+      return;
     }
 
     const { email, password } = parsedData.data!;
