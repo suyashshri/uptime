@@ -1,7 +1,11 @@
 import axios from "axios";
 import { describe, expect, it } from "bun:test";
 import { BACKEND_URL } from "./config";
-import { userDetails } from "./userutil";
+import {
+  signedupNotVerifiedUserDetail,
+  signedupVerifiedUserDetail,
+  userDetails,
+} from "./userutil";
 
 describe("SignUp Endpoints", () => {
   it("Is able to signup if everything is correct", async () => {
@@ -119,5 +123,51 @@ describe("Verify Otp Endpoint", () => {
 });
 
 describe("SignIn Endpoints", () => {
-  it;
+  it("Is able to signin if everything is correct", async () => {
+    try {
+      const { email, password } = await signedupVerifiedUserDetail();
+
+      const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, {
+        email,
+        password,
+      });
+      expect(response.status).toBe(200);
+      expect(response.data.message).toBe("Verified successfully");
+      expect(response.data.token).not.toBeNull();
+    } catch (e) {
+      expect(false);
+    }
+  });
+
+  it("Is not able to signin if user is not verified", async () => {
+    try {
+      const { email, password } = await signedupNotVerifiedUserDetail();
+
+      const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, {
+        email,
+        password,
+      });
+      expect(response.status).toBe(400);
+      expect(response.data.message).toBe("User not verified");
+      expect(response.data.token).not.toBeNull();
+    } catch (e) {
+      expect(false);
+    }
+  });
+
+  it("Is not able to signin if user is verified by incorrect password", async () => {
+    try {
+      const { email } = await signedupVerifiedUserDetail();
+
+      const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, {
+        email,
+        password: "passwor",
+      });
+      expect(response.status).toBe(403);
+      expect(response.data.message).toBe("User not authorized");
+      expect(response.data.token).not.toBeNull();
+    } catch (e) {
+      expect(false);
+    }
+  });
 });
