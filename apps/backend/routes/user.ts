@@ -10,15 +10,15 @@ const router = Router();
 router.post("/signup", async (req, res) => {
   try {
     const data = req.body;
-    const paresedData = SignUpSchema.safeParse(data);
+    const parsedData = SignUpSchema.safeParse(data);
 
-    if (!paresedData.success) {
+    if (!parsedData.success) {
       res.status(400).json({
         message: "Invalid/Incorrect Inputs provided",
       });
     }
 
-    const { username, email, password } = paresedData.data!;
+    const { username, email, password } = parsedData.data!;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //   const otp = Array.from({ length: 6 }, () =>
@@ -26,7 +26,7 @@ router.post("/signup", async (req, res) => {
     //   ).join("");
     const otp = "111111";
 
-    const response = await prisma.user.create({
+    await prisma.user.create({
       data: {
         username,
         email,
@@ -53,14 +53,14 @@ router.post("/signup", async (req, res) => {
 router.post("/verify-otp", async (req, res) => {
   try {
     const data = req.body;
-    const paresedData = VerfityOtpSchema.safeParse(data);
-    if (!paresedData.success) {
+    const parsedData = VerfityOtpSchema.safeParse(data);
+    if (!parsedData.success) {
       res.status(400).json({
         message: "Invalid/Incorrect Inputs provided",
       });
     }
 
-    const { email, otp } = paresedData.data!;
+    const { email, otp } = parsedData.data!;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -111,14 +111,14 @@ router.post("/verify-otp", async (req, res) => {
 router.post("/signin", async (req, res) => {
   try {
     const data = req.body;
-    const paresedData = SignInSchema.safeParse(data);
-    if (!paresedData.success) {
+    const parsedData = SignInSchema.safeParse(data);
+    if (!parsedData.success) {
       res.status(400).json({
         message: "Invalid/Incorrect Inputs provided",
       });
     }
 
-    const { email, password } = paresedData.data!;
+    const { email, password } = parsedData.data!;
 
     const user = await prisma.user.findUnique({
       where: {

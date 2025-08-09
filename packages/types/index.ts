@@ -15,3 +15,8 @@ export const SignInSchema = z.object({
   email: z.email(),
   password: z.string(),
 });
+
+export const CreateWebsiteSchema = z.object({
+  name: z.string(),
+  url: z.string(),
+});
